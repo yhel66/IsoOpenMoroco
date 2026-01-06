@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsOpen Maroc 🇲🇦 | Commerces ouverts maintenant</title>
+    <meta name="description" content="Trouvez les commerces ouverts au Maroc. Restaurants, pharmacies de garde, supérettes 24h/24.">
+    
+    <!-- Style CSS intégré -->
+    <style>
+        /* RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* VARIABLES */
+        :root {
+            --vert: #2e7d32;
+            --bleu: #1976d2;
+            --rouge: #d32f2f;
+            --orange: #f57c00;
+            --gris-clair: #f5f5f5;
+            --gris-fonce: #333;
+        }
+        
+        /* BASE */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gris-clair);
+            color: var(--gris-fonce);
+            line-height: 1.6;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--vert), var(--bleu));
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        /* RECHERCHE */
+        .search-box {
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--vert);
+        }
+        
+        /* STATISTIQUES */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--vert);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* COMMERCES */
+        .commerce-grid {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .commerce-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .commerce-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status.open {
+            background: #e8f5e9;
+            color: var(--vert);
+        }
+        
+        .status.closed {
+            background: #ffebee;
+            color: var(--rouge);
+        }
+        
+        .status.garde {
+            background: #fff3e0;
+            color: var(--orange);
+        }
+        
+        .commerce-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--gris-fonce);
+        }
+        
+        .commerce-info {
+            color: #666;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* BOUTONS ACTION */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-call {
+            background: var(--vert);
+        }
+        
+        .btn-whatsapp {
+            background: #25D366;
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: var(--gris-fonce);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .commerce-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                gap: 10px;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+                padding: 12px 15px;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* BANDEAU COMERCIAL */
+        .commercial-banner {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 10px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .commercial-banner a {
+            color: white;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">🏪</div>
+        <h1>IsOpen Maroc 🇲🇦</h1>
+        <p>Les commerces ouverts près de chez vous</p>
+    </header>
+
+    <!-- RECHERCHE -->
+    <div class="search-box">
+        <input type="text" class="search-input" id="searchInput" 
+               placeholder="Rechercher un commerce, restaurant, pharmacie...">
+    </div>
+
+    <!-- STATISTIQUES -->
+    <div class="stats">
+        <div class="stat-card">
+            <span class="stat-number" id="totalCount">124</span>
+            <span class="stat-label">Commerces</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" id="openCount">89</span>
+            <span class="stat-label">Ouverts maintenant</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" id="citiesCount">15</span>
+            <span class="stat-label">Villes</span>
+        </div>
+    </div>
+
+    <!-- BANDEAU COMERCIAL -->
+    <div class="commercial-banner">
+        <strong>📢 VOTRE COMMERCE ICI ?</strong><br>
+        Appelez le <strong>06 12 34 56 78</strong> pour être visible 24h/24<br>
+        <small>À partir de 300 DH/mois • 1 mois gratuit pour essayer</small>
+    </div>
+
+    <!-- LISTE DES COMMERCES -->
+    <div class="commerce-grid" id="commerceGrid">
+        <!-- Les commerces seront ajoutés par JavaScript -->
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h2>IsOpen Maroc</h2>
+        <p>Le service n°1 de vérification des horaires au Maroc</p>
+        
+        <div class="footer-links">
+            <a href="#about">À propos</a>
+            <a href="#contact">Contact</a>
+            <a href="#commerces">Ajouter un commerce</a>
+            <a href="#partenaires">Devenir partenaire</a>
+        </div>
+        
+        <div class="commercial-banner" style="background: linear-gradient(135deg, #2196F3, #1976D2); margin: 20px auto;">
+            <strong>📞 Service commercial : 06 12 34 56 78</strong><br>
+            <small>Email : contact@isopenmaroc.ma</small>
+        </div>
+        
+        <div class="copyright">
+            © 2024 IsOpen Maroc. Tous droits réservés.<br>
+            <small>Hébergé au Maroc • 🇲🇦 Maroc Digital</small>
+        </div>
+    </footer>
+
+    <!-- SCRIPT JAVASCRIPT -->
+    <script>
+        // 🔹 DONNÉES DES COMMERCES
+        const commerces = [
+            // CASABLANCA
+            {
+                id: 1,
+                name: "McDonald's Maarif",
+                city: "Casablanca",
+                type: "restaurant",
+                hours: "09:00-01:00",
+                phone: "0522440002",
+                status: "open",
+                category: "fastfood"
+            },
+            {
+                id: 2,
+                name: "Pharmacie de Garde Centre",
+                city: "Casablanca", 
+                type: "pharmacie",
+                hours: "20:00-08:00",
+                phone: "0522440100",
+                status: "garde",
+                category: "pharmacie"
+            },
+            {
+                id: 3,
+                name: "Burger King Morocco Mall",
+                city: "Casablanca",
+                type: "restaurant",
+                hours: "10:00-00:00",
+                phone: "0522440005",
+                status: "open",
+                category: "fastfood"
+            },
+            {
+                id: 4,
+                name: "Pizza Hut Ain Diab",
+                city: "Casablanca",
+                type: "restaurant",
+                hours: "11:00-23:00",
+                phone: "0522440008",
+                status: "open",
+                category: "pizzeria"
+            },
+            // RABAT
+            {
+                id: 5,
+                name: "McDonald's Agdal",
+                city: "Rabat",
+                type: "restaurant",
+                hours: "09:00-01:00",
+                phone: "0537440017",
+                status: "open",
+                category: "fastfood"
+            },
+            {
+                id: 6,
+                name: "Pharmacie de Nuit Rabat",
+                city: "Rabat",
+                type: "pharmacie",
+                hours: "19:00-07:00",
+                phone: "0537440200",
+                status: "garde",
+                category: "pharmacie"
+            },
+            // MARRAKECH
+            {
+                id: 7,
+                name: "McDonald's Guéliz",
+                city: "Marrakech",
+                type: "restaurant",
+                hours: "09:00-01:00",
+                phone: "0524440027",
+                status: "open",
+                category: "fastfood"
+            },
+            {
+                id: 8,
+                name: "Restaurant Le Foundouk",
+                city: "Marrakech",
+                type: "restaurant",
+                hours: "12:00-23:00",
+                phone: "0524440033",
+                status: "open",
+                category: "marocain"
+            },
+            // AUTRES
+            {
+                id: 9,
+                name: "Supérette 24h/24",
+                city: "Casablanca",
+                type: "supermarché",
+                hours: "00:00-24:00",
+                phone: "0522440300",
+                status: "open",
+                category: "supermarché"
+            },
+            {
+                id: 10,
+                name: "KFC Maarif",
+                city: "Casablanca",
+                type: "restaurant",
+                hours: "11:00-23:00",
+                phone: "0522440006",
+                status: "closed",
+                category: "fastfood"
+            }
+        ];
+
+        // 🔹 AFFICHER LES COMMERCES
+        function afficherCommerces(liste = commerces) {
+            const grid = document.getElementById('commerceGrid');
+            
+            // Mettre à jour les statistiques
+            document.getElementById('totalCount').textContent = commerces.length;
+            document.getElementById('openCount').textContent = commerces.filter(c => c.status === 'open' || c.status === 'garde').length;
+            
+            // Compter les villes uniques
+            const villes = [...new Set(commerces.map(c => c.city))];
+            document.getElementById('citiesCount').textContent = villes.length;
+            
+            // Afficher les commerces
+            grid.innerHTML = liste.map(commerce => `
+                <div class="commerce-card">
+                    <div class="status ${commerce.status}">
+                        ${commerce.status === 'open' ? 'OUVERT' : 
+                          commerce.status === 'garde' ? 'DE GARDE' : 'FERMÉ'}
+                    </div>
+                    
+                    <h3 class="commerce-name">${commerce.name}</h3>
+                    
+                    <div class="commerce-info">
+                        <span>📍</span> ${commerce.city}
+                    </div>
+                    
+                    <div class="commerce-info">
+                        <span>🏷️</span> ${commerce.category}
+                    </div>
+                    
+                    <div class="commerce-info">
+                        <span>🕐</span> ${commerce.hours}
+                    </div>
+                    
+                    <div class="commerce-info">
+                        <span>📞</span> ${commerce.phone}
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-call" onclick="appelerCommerce('${commerce.name}', '${commerce.phone}')">
+                            <span>📱</span> Appeler
+                        </button>
+                        <button class="btn btn-whatsapp" onclick="whatsappCommerce('${commerce.name}', '${commerce.phone}')">
+                            <span>💬</span> WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 🔹 FONCTION APPEL
+        function appelerCommerce(nom, telephone) {
+            if (confirm(`Appeler ${nom} au ${telephone} ?`)) {
+                // Pour mobile : ouvrir le composeur d'appel
+                window.location.href = `tel:${telephone}`;
+                
+                // Pour ordinateur : afficher un message
+                if (!/Mobi|Android/i.test(navigator.userAgent)) {
+                    alert(`Sur mobile, cela ouvrirait l'appel vers ${telephone}\n\nNuméro : ${telephone}`);
+                }
+            }
+        }
+
+        // 🔹 FONCTION WHATSAPP
+        function whatsappCommerce(nom, telephone) {
+            const message = `Bonjour ${nom}, je vous contacte depuis IsOpen Maroc.`;
+            const whatsappUrl = `https://wa.me/${telephone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // 🔹 RECHERCHE
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const recherche = e.target.value.toLowerCase().trim();
+            
+            if (recherche === '') {
+                afficherCommerces();
+                return;
+            }
+            
+            const resultats = commerces.filter(commerce =>
+                commerce.name.toLowerCase().includes(recherche) ||
+                commerce.city.toLowerCase().includes(recherche) ||
+                commerce.category.toLowerCase().includes(recherche) ||
+                commerce.type.toLowerCase().includes(recherche) ||
+                (recherche.includes('ouvert') && commerce.status === 'open') ||
+                (recherche.includes('garde') && commerce.status === 'garde') ||
+                (recherche === 'mcdo' && commerce.name.includes("McDonald")) ||
+                (recherche === 'pharma' && commerce.type === 'pharmacie')
+            );
+            
+            if (resultats.length === 0) {
+                document.getElementById('commerceGrid').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <div style="font-size: 3rem; color: #ccc;">🔍</div>
+                        <h3>Aucun résultat trouvé</h3>
+                        <p>Essayez avec d'autres mots-clés</p>
+                    </div>
+                `;
+            } else {
+                afficherCommerces(resultats);
+            }
+        });
+
+        // 🔹 INITIALISATION
+        document.addEventListener('DOMContentLoaded', function() {
+            afficherCommerces();
+            
+            // Afficher l'heure actuelle
+            const maintenant = new Date();
+            const heure = maintenant.getHours().toString().padStart(2, '0');
+            const minutes = maintenant.getMinutes().toString().padStart(2, '0');
+            
+            // Mettre à jour le titre avec l'heure
+            document.title = `IsOpen Maroc (${heure}:${minutes}) - Commerces ouverts`;
+            
+            // Message de bienvenue
+            console.log('🚀 IsOpen Maroc est prêt !');
+            console.log('📞 Service commercial : 06 12 34 56 78');
+        });
+
+        // 🔹 TRACKING SIMPLE
+        function trackEvent(action, label) {
+            console.log(`📊 Événement: ${action} - ${label}`);
+            // Ici vous pouvez ajouter Google Analytics plus tard
+        }
+
+        // 🔹 BOUTON COMMERCIAL
+        function contacterCommercial() {
+            const message = "Bonjour, je suis intéressé par IsOpen Maroc pour mon commerce.";
+            const telephone = "212612345678";
+            window.open(`https://wa.me/${telephone}?text=${encodeURIComponent(message)}`, '_blank');
+            trackEvent('contact_commercial', 'whatsapp');
+        }
+    </script>
+</body>
+</html>
